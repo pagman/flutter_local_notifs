@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'FirebaseMessaging/FirebaseMessagingDemo.dart';
+import 'widgets/Wrap/WrapWidgetDemo2.dart';
 
 void main() {
   runApp(
@@ -12,7 +13,7 @@ class HomeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FirebaseMessagingDemo(),
+      home: WrapWidget(),
     );
   }
 }
