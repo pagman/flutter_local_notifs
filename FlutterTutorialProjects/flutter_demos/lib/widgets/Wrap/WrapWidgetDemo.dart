@@ -1,145 +1,257 @@
 import 'package:flutter/material.dart';
 
 class WrapWidget extends StatefulWidget {
+  //
+  final String title = "Wrap Widget Demo";
+
   @override
   _WrapWidgetState createState() => _WrapWidgetState();
 }
 
 class _WrapWidgetState extends State<WrapWidget> {
   //
-  BuildContext context; //global context
+  GlobalKey<ScaffoldState> _key;
+  int _choiceIndex;
+  bool _isSelected;
+  List<String> _chipsToDelete;
+  List<Companies> _companies;
+  List<String> _filters;
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = false;
+    _choiceIndex = 0;
+    _key = GlobalKey();
+    _filters = <String>[];
+    _chipsToDelete = ['Health', 'Food', 'Nature'];
+    _companies = <Companies>[
+      const Companies('Google'),
+      const Companies('Apple'),
+      const Companies('Microsoft'),
+      const Companies('Sony'),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    this.context = context;
     return Scaffold(
+      key: _key,
       appBar: AppBar(
-        title: Container(
-          child: Center(
-            child: Text(
-              'Wrap Widget',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          margin: EdgeInsets.only(right: 48),
-        ),
+        title: Text(widget.title),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 16, bottom: 16),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Without Wrap widget',
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 12, right: 12, top: 8),
-                        child: Text(
-                          'Here we observe that the layout is overflowing to the right\n'
-                          'which results in a broken widget',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 14.0,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                ///This will create an overflow error
-                Row(
-                  children: <Widget>[
-                    chipDesign("Food", Color(0xFF4fc3f7)),
-                    chipDesign("Lifestyle", Color(0xFFffb74d)),
-                    chipDesign("Health", Color(0xFFff8a65)),
-                    chipDesign("Sports", Color(0xFF9575cd)),
-                    chipDesign("Nature", Color(0xFF4db6ac)),
-                    chipDesign("Fashion", Color(0xFFf06292)),
-                    chipDesign("Heritage", Color(0xFFa1887f)),
-                    chipDesign("City Life", Color(0xFF90a4ae)),
-                    chipDesign("Entertainment", Color(0xFFba68c8)),
-                  ],
-                ),
-              ],
+            rowChips(),
+            Divider(),
+            wrapWidget(),
+            Divider(),
+            chips2(),
+            Divider(),
+            choiceChip(),
+            Divider(),
+            actionChips(),
+            Divider(),
+            inputChip(),
+            Divider(),
+            Wrap(
+              children: actorWidgets.toList(),
             ),
-            divider(context),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'With Wrap widget',
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 12, right: 12, top: 8),
-                        child: Text(
-                          'Here we observe that chips are contained inside a Wrap '
-                          'widget.\nIt adjusts all the children according to the space'
-                          ' available\nand automatically wraps to the next line',
-                          style: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 14.0,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                ///This will handle itself to get rid of the overflow error
-                Wrap(
-                  spacing: 0.0, // gap between adjacent chips
-                  runSpacing: 0.0, // gap between lines
-                  children: <Widget>[
-                    chipDesign("Food", Color(0xFF4fc3f7)),
-                    chipDesign("Lifestyle", Color(0xFFffb74d)),
-                    chipDesign("Health", Color(0xFFff8a65)),
-                    chipDesign("Sports", Color(0xFF9575cd)),
-                    chipDesign("Nature", Color(0xFF4db6ac)),
-                    chipDesign("Fashion", Color(0xFFf06292)),
-                    chipDesign("Heritage", Color(0xFFa1887f)),
-                    chipDesign("City Life", Color(0xFF90a4ae)),
-                    chipDesign("Entertainment", Color(0xFFba68c8)),
-                  ],
-                ),
-              ],
-            ),
+            Text('Selected: ${_filters.join(', ')}'),
           ],
         ),
       ),
     );
   }
-}
 
-///Common method to design a chip with different properties
-///like label and background color
-Widget chipDesign(String label, Color color) => Container(
+  // https://www.youtube.com/watch?v=TF-TBsgIErY
+  // Filter chips use tags or descriptive words as a way to filter content.
+  Iterable<Widget> get actorWidgets sync* {
+    for (Companies company in _companies) {
+      yield Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: FilterChip(
+          avatar: CircleAvatar(child: Text(company.name[0].toUpperCase())),
+          label: Text(company.name),
+          selected: _filters.contains(company.name),
+          onSelected: (bool value) {
+            setState(() {
+              if (value) {
+                _filters.add(company.name);
+              } else {
+                _filters.removeWhere((String name) {
+                  return name == company.name;
+                });
+              }
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  rowChips() {
+    return Row(
+      children: <Widget>[
+        chipForRow("Food", Color(0xFF4fc3f7)),
+        chipForRow("Lifestyle", Color(0xFFffb74d)),
+        chipForRow("Health", Color(0xFFff8a65)),
+        chipForRow("Sports", Color(0xFF9575cd)),
+        chipForRow("Nature", Color(0xFF4db6ac)),
+      ],
+    );
+  }
+
+  wrapWidget() {
+    return Wrap(
+      spacing: 10.0, // gap between adjacent chips
+      runSpacing: 10.0, // gap between lines
+      children: <Widget>[
+        chip("Food", Color(0xFF4fc3f7)),
+        chip("Lifestyle", Color(0xFFffb74d)),
+        chip("Health", Color(0xFFff8a65)),
+        chip("Sports", Color(0xFF9575cd)),
+        chip("Nature", Color(0xFF4db6ac)),
+      ],
+    );
+  }
+
+  // Action chips are a set of options which trigger an action related to primary content.
+  // Action chips should appear dynamically and contextually in a UI.
+  Widget actionChips() {
+    return ActionChip(
+      elevation: 6,
+      padding: EdgeInsets.all(10.0),
+      avatar: CircleAvatar(
+        backgroundColor: Colors.green[50],
+        child: Icon(Icons.call),
+      ),
+      label: Text('Call'),
+      onPressed: () {
+        _key.currentState.showSnackBar(
+          SnackBar(
+            content: Text('Calling...'),
+          ),
+        );
+      },
+      backgroundColor: Colors.white,
+      shape: StadiumBorder(
+        side: BorderSide(
+          width: 1,
+          color: Colors.lightBlueAccent,
+        ),
+      ),
+    );
+  }
+
+  // allows a single selection from a set of options.
+  Widget choiceChip() {
+    return Wrap(
+      spacing: 6.0,
+      children: List<Widget>.generate(
+        3,
+        (int index) {
+          return ChoiceChip(
+            label: Text('Choice $index'),
+            selected: _choiceIndex == index,
+            onSelected: (bool selected) {
+              setState(() {
+                _choiceIndex = selected ? index : null;
+              });
+            },
+            selectedColor: Colors.green,
+            backgroundColor: Colors.blue,
+            labelStyle: TextStyle(color: Colors.white),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  // Chip to represent a person or any other entity
+  // gmail
+  // has onSelected, onDeleted and onPressed
+  Widget inputChip() {
+    return InputChip(
+      padding: EdgeInsets.all(10.0),
+      avatar: CircleAvatar(
+        backgroundColor: Colors.blue.shade500,
+        child: Text('JW'),
+      ),
+      label: Text('John Watson'),
+      selected: _isSelected,
+      selectedColor: Colors.green,
+      onSelected: (bool val) {
+        print("selected");
+        setState(() {
+          _isSelected = val;
+        });
+      },
+      // can't use onPressed and onSelected simultaneously.
+      // onPressed: () {
+      //   print('Hello, how are you?');
+      // },
+      onDeleted: () {
+        //
+      },
+    );
+  }
+
+  // Chips are compact elements that represent an attribute,
+  // text, entity, or action.
+  // this can be deleted.
+  Widget chips2() {
+    return Wrap(
+      spacing: 6.0,
+      children: List<Widget>.generate(
+        _chipsToDelete.length,
+        (int index) {
+          return Chip(
+            label: Text(_chipsToDelete[index]),
+            onDeleted: () {
+              setState(() {
+                _chipsToDelete.removeAt(index);
+              });
+            },
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  // Chips are compact elements that represent an attribute,
+  // text, entity, or action.
+  // this can be deleted.
+  Widget chip(String label, Color color) {
+    return Chip(
+      labelPadding: EdgeInsets.all(5.0),
+      avatar: CircleAvatar(
+        backgroundColor: Colors.grey.shade800,
+        child: Text('AB'),
+      ),
+      label: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: color,
+      elevation: 6,
+      shadowColor: Colors.grey[50],
+      padding: EdgeInsets.all(4),
+    );
+  }
+
+  Widget chipForRow(String label, Color color) {
+    return Container(
+      margin: EdgeInsets.all(10.0),
       child: Chip(
+        labelPadding: EdgeInsets.all(5.0),
+        avatar: CircleAvatar(
+          backgroundColor: Colors.grey.shade800,
+          child: Text('AB'),
+        ),
         label: Text(
           label,
           style: TextStyle(
@@ -147,15 +259,15 @@ Widget chipDesign(String label, Color color) => Container(
           ),
         ),
         backgroundColor: color,
-        elevation: 4,
+        elevation: 6,
         shadowColor: Colors.grey[50],
         padding: EdgeInsets.all(4),
       ),
-      margin: EdgeInsets.only(left: 12, right: 12, top: 2, bottom: 2),
     );
+  }
+}
 
-///Method to create a divider with added margin
-Container divider(BuildContext context) => Container(
-      child: Divider(),
-      margin: EdgeInsets.only(left: 10, right: 10, top: 28, bottom: 28),
-    );
+class Companies {
+  const Companies(this.name);
+  final String name;
+}
