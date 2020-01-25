@@ -10,24 +10,33 @@ class WrapWidget extends StatefulWidget {
 
 class _WrapWidgetState extends State<WrapWidget> {
   //
-  GlobalKey<ScaffoldState> key = GlobalKey();
-  int _value = 1;
-  bool isSelected = false;
-  List<String> _chipsToDelete = ['Health', 'Food', 'Nature'];
+  GlobalKey<ScaffoldState> _key;
+  int _choiceIndex;
+  bool _isSelected;
+  List<String> _chipsToDelete;
+  List<Companies> _companies;
+  List<String> _filters;
 
-  final List<Companies> _companies = <Companies>[
-    const Companies('Google'),
-    const Companies('Apple'),
-    const Companies('Microsoft'),
-    const Companies('Sony'),
-  ];
-
-  List<String> _filters = <String>[];
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = false;
+    _choiceIndex = 0;
+    _key = GlobalKey();
+    _filters = <String>[];
+    _chipsToDelete = ['Health', 'Food', 'Nature'];
+    _companies = <Companies>[
+      const Companies('Google'),
+      const Companies('Apple'),
+      const Companies('Microsoft'),
+      const Companies('Sony'),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: key,
+      key: _key,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -120,7 +129,7 @@ class _WrapWidgetState extends State<WrapWidget> {
       ),
       label: Text('Call'),
       onPressed: () {
-        key.currentState.showSnackBar(
+        _key.currentState.showSnackBar(
           SnackBar(
             content: Text('Calling...'),
           ),
@@ -145,10 +154,10 @@ class _WrapWidgetState extends State<WrapWidget> {
         (int index) {
           return ChoiceChip(
             label: Text('Choice $index'),
-            selected: _value == index,
+            selected: _choiceIndex == index,
             onSelected: (bool selected) {
               setState(() {
-                _value = selected ? index : null;
+                _choiceIndex = selected ? index : null;
               });
             },
             selectedColor: Colors.green,
@@ -171,12 +180,12 @@ class _WrapWidgetState extends State<WrapWidget> {
         child: Text('JW'),
       ),
       label: Text('John Watson'),
-      selected: isSelected,
+      selected: _isSelected,
       selectedColor: Colors.green,
       onSelected: (bool val) {
         print("selected");
         setState(() {
-          isSelected = val;
+          _isSelected = val;
         });
       },
       // can't use onPressed and onSelected simultaneously.
