@@ -16,18 +16,13 @@ class _WrapWidgetState extends State<WrapWidget> {
   List<String> _chipsToDelete = ['Health', 'Food', 'Nature'];
 
   final List<Companies> _companies = <Companies>[
-    const Companies('Google', 'G'),
-    const Companies('Apple', 'A'),
-    const Companies('Microsoft', 'M'),
-    const Companies('Sony', 'S'),
+    const Companies('Google'),
+    const Companies('Apple'),
+    const Companies('Microsoft'),
+    const Companies('Sony'),
   ];
 
   List<String> _filters = <String>[];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +37,19 @@ class _WrapWidgetState extends State<WrapWidget> {
             rowChips(),
             Divider(),
             wrapWidget(),
+            Divider(),
+            chips2(),
+            Divider(),
             choiceChip(),
             Divider(),
             actionChips(),
             Divider(),
-            chips2(),
-            Divider(),
             inputChip(),
+            Divider(),
             Wrap(
               children: actorWidgets.toList(),
             ),
-            Text('Look for: ${_filters.join(', ')}'),
+            Text('Selected: ${_filters.join(', ')}'),
           ],
         ),
       ),
@@ -99,8 +96,8 @@ class _WrapWidgetState extends State<WrapWidget> {
 
   wrapWidget() {
     return Wrap(
-      spacing: 5.0, // gap between adjacent chips
-      runSpacing: 0.0, // gap between lines
+      spacing: 10.0, // gap between adjacent chips
+      runSpacing: 10.0, // gap between lines
       children: <Widget>[
         chip("Food", Color(0xFF4fc3f7)),
         chip("Lifestyle", Color(0xFFffb74d)),
@@ -129,11 +126,11 @@ class _WrapWidgetState extends State<WrapWidget> {
           ),
         );
       },
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       shape: StadiumBorder(
         side: BorderSide(
           width: 1,
-          color: Colors.grey,
+          color: Colors.lightBlueAccent,
         ),
       ),
     );
@@ -142,6 +139,7 @@ class _WrapWidgetState extends State<WrapWidget> {
   // allows a single selection from a set of options.
   Widget choiceChip() {
     return Wrap(
+      spacing: 6.0,
       children: List<Widget>.generate(
         3,
         (int index) {
@@ -261,7 +259,6 @@ class _WrapWidgetState extends State<WrapWidget> {
 }
 
 class Companies {
-  const Companies(this.name, this.initials);
+  const Companies(this.name);
   final String name;
-  final String initials;
 }
