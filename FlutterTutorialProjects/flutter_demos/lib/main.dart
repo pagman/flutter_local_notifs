@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'widgets/Wrap/WrapWidgetDemo2.dart';
+import 'widgets/Wrap/WrapWidgetDemo.dart';
 
 void main() {
   runApp(
@@ -12,7 +12,7 @@ class HomeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WrapWidget(),
+      home: WrapWidgetDemo(),
     );
   }
 }
