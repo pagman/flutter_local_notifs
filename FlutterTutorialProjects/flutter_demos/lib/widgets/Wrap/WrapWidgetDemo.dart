@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class WrapWidget extends StatefulWidget {
+class WrapWidgetDemo extends StatefulWidget {
   //
   final String title = "Wrap Widget Demo";
 
   @override
-  _WrapWidgetState createState() => _WrapWidgetState();
+  _WrapWidgetDemoState createState() => _WrapWidgetDemoState();
 }
 
-class _WrapWidgetState extends State<WrapWidget> {
+class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
   //
   GlobalKey<ScaffoldState> _key;
   int _choiceIndex;
