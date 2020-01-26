@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class WrapWidgetDemo extends StatefulWidget {
   //
-  final String title = 'Wrap Widget, Chips Demo';
+  final String title = 'Wrap Widget & Chips';
 
   @override
   State<StatefulWidget> createState() => _WrapWidgetDemoState();
@@ -41,22 +41,48 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
         title: Text(widget.title),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(
+            height: 20.0,
+          ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: rowChips(),
           ),
+          SizedBox(
+            height: 20.0,
+          ),
           Divider(),
+          SizedBox(
+            height: 20.0,
+          ),
           wrapWidget(),
+          SizedBox(
+            height: 20.0,
+          ),
           Divider(),
           dynamicChips(),
+          SizedBox(
+            height: 20.0,
+          ),
           Divider(),
           actionChips(),
+          SizedBox(
+            height: 0.0,
+          ),
           Divider(),
           inputChips(),
           Divider(),
+          SizedBox(
+            height: 20.0,
+          ),
           Wrap(
             children: companyWidgets.toList(),
+          ),
+          SizedBox(
+            height: 20.0,
           ),
           Text('Selected: ${_filters.join(', ')}'),
         ],
@@ -86,6 +112,7 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
         chip('Lifestyle', Color(0xFF9575cd)),
         chip('Sports', Color(0xFF4db6ac)),
         chip('Nature', Color(0xFF5cda65)),
+        chip('Learn', Color(0xFFacbb65)),
       ],
     );
   }
