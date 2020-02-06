@@ -16,12 +16,15 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
   bool _isSelected;
   List<Company> _companies;
   List<String> _filters;
+  List<String> _choices;
+  int _defaultChoiceIndex;
 
   @override
   void initState() {
     super.initState();
     _key = GlobalKey<ScaffoldState>();
     _isSelected = false;
+    _defaultChoiceIndex = 0;
     _filters = <String>[];
     _companies = <Company>[
       const Company('Google'),
@@ -31,6 +34,7 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
       const Company('Amazon'),
     ];
     _dynamicChips = ['Health', 'Food', 'Nature'];
+    _choices = ['Choice 1', 'Choice 2', 'Choice 3'];
   }
 
   @override
@@ -41,48 +45,24 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
         title: Text(widget.title),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          SizedBox(
-            height: 20.0,
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: rowChips(),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
+          // SingleChildScrollView(
+          //   scrollDirection: Axis.horizontal,
+          //   child: rowChips(),
+          // ),
           Divider(),
-          SizedBox(
-            height: 20.0,
-          ),
           wrapWidget(),
-          SizedBox(
-            height: 20.0,
-          ),
           Divider(),
           dynamicChips(),
-          SizedBox(
-            height: 20.0,
-          ),
           Divider(),
           actionChips(),
-          SizedBox(
-            height: 0.0,
-          ),
+          Divider(),
+          choiceChips(),
           Divider(),
           inputChips(),
           Divider(),
-          SizedBox(
-            height: 20.0,
-          ),
           Wrap(
             children: companyWidgets.toList(),
-          ),
-          SizedBox(
-            height: 20.0,
           ),
           Text('Selected: ${_filters.join(', ')}'),
         ],
@@ -107,12 +87,11 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
       spacing: 6.0,
       runSpacing: 6.0,
       children: <Widget>[
-        chip('Health', Color(0xFFff8a65)),
-        chip('Food', Color(0xFF4fc3f7)),
-        chip('Lifestyle', Color(0xFF9575cd)),
-        chip('Sports', Color(0xFF4db6ac)),
-        chip('Nature', Color(0xFF5cda65)),
-        chip('Learn', Color(0xFFacbb65)),
+        chip('Health', Color(0xFFc40233)),
+        chip('Food', Color(0xFF007f5c)),
+        chip('Lifestyle', Color(0xFF5f65d3)),
+        chip('Sports', Color(0xFF19ca21)),
+        chip('Nature', Color(0xFF60230b)),
       ],
     );
   }
@@ -131,6 +110,28 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
           },
         );
       }),
+    );
+  }
+
+  Widget choiceChips() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: _choices.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ChoiceChip(
+            label: Text(_choices[index]),
+            selected: _defaultChoiceIndex == index,
+            selectedColor: Colors.green,
+            onSelected: (bool selected) {
+              setState(() {
+                _defaultChoiceIndex = selected ? index : 0;
+              });
+            },
+            backgroundColor: Colors.blue,
+            labelStyle: TextStyle(color: Colors.white),
+          );
+        },
+      ),
     );
   }
 
@@ -211,7 +212,7 @@ class _WrapWidgetDemoState extends State<WrapWidgetDemo> {
     return Chip(
       labelPadding: EdgeInsets.all(5.0),
       avatar: CircleAvatar(
-        backgroundColor: Colors.grey.shade600,
+        backgroundColor: Colors.blueAccent,
         child: Text(label[0].toUpperCase()),
       ),
       label: Text(
