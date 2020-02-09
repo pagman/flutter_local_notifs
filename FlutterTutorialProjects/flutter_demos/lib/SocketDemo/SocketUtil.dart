@@ -1,29 +1,32 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 class SocketUtil {
   //
-
   Socket _socket;
+  static const String SERVER_IP = "127.0.0.1";
+  static const int SERVER_PORT = 10002;
 
-  void connect() async {
-    Socket socket = await Socket.connect("127.0.0.1", 10002);
-    print('connected');
+  Future<bool> sendMessage(String message, Function connectListener,
+      Function messageListener) async {
+    try {
+      _socket = await Socket.connect(SERVER_IP, SERVER_PORT);
+      connectListener(true);
+      _socket.listen((List<int> event) {
+        messageListener(utf8.decode(event));
+      });
+      _socket.add(utf8.encode(message));
+      _socket.close();
+    } catch (e) {
+      connectListener(false);
+      return false;
+    }
+    return true;
+  }
 
-    // listen to the received data event stream
-    socket.listen((List<int> event) {
-      print(utf8.decode(event));
-    });
-
-    // send hello
-    socket.add(utf8.encode('hello'));
-
-    // wait 5 seconds
-    await Future.delayed(Duration(seconds: 5));
-
-    // .. and close the socket
-    socket.close();
+  void closeSocket() {
+    _socket.close();
+    _socket = null;
   }
 
   void cleanUp() {
