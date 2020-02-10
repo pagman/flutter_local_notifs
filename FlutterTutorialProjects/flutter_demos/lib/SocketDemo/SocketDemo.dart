@@ -7,7 +7,7 @@ class SocketDemo extends StatefulWidget {
   //
   SocketDemo() : super();
 
-  final String title = "AppState Demo";
+  final String title = "Socket Demo";
 
   @override
   SocketDemoState createState() => SocketDemoState();
@@ -27,7 +27,7 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    _connectSocketChannel();
+    //_connectSocketChannel();
     _textEditingController = TextEditingController();
     _status = "";
     _messages = List<String>();
@@ -39,9 +39,7 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
   }
 
   void _sendMessage() {
-    if (_textEditingController.text.isNotEmpty) {
-      channel.sink.add(_textEditingController.text);
-    }
+    channel.sink.add(_textEditingController.text);
   }
 
   @override
@@ -76,27 +74,30 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
                 hintText: 'Filter by name or email',
               ),
             ),
-            StreamBuilder(
-              stream: channel.stream,
-              builder: (context, snapshot) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24.0),
-                  child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
-                );
-              },
-            ),
+            // StreamBuilder(
+            //   stream: channel.stream,
+            //   builder: (context, snapshot) {
+            //     return Padding(
+            //       padding: const EdgeInsets.symmetric(vertical: 24.0),
+            //       child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
+            //     );
+            //   },
+            // ),
             OutlineButton(
               child: Text("Send Message"),
               onPressed: () {
-                // _socketUtil
-                //     .sendMessage(_textEditingController.text, connectListener,
-                //         messageListener)
-                //     .then((connected) {
-                //   if (connected) {
-                //     _socketUtil.closeSocket();
-                //   }
-                // });
-                _sendMessage();
+                if (_textEditingController.text.isEmpty) {
+                  return;
+                }
+                _socketUtil
+                    .sendMessage(_textEditingController.text, connectListener,
+                        messageListener)
+                    .then((connected) {
+                  if (connected) {
+                    _socketUtil.closeSocket();
+                  }
+                });
+                //_sendMessage();
               },
             ),
             SizedBox(

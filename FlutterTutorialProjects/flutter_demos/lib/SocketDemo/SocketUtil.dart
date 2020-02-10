@@ -5,7 +5,7 @@ class SocketUtil {
   //
   Socket _socket;
   static const String SERVER_IP = "127.0.0.1";
-  static const int SERVER_PORT = 10002;
+  static const int SERVER_PORT = 10003;
 
   Future<bool> sendMessage(String message, Function connectListener,
       Function messageListener) async {
