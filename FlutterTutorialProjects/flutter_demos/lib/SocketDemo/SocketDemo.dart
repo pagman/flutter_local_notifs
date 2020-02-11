@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SocketUtil.dart';
+import 'package:flutter_demos/SocketDemo/SocketUtil.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -10,42 +10,39 @@ class SocketDemo extends StatefulWidget {
   final String title = "Socket Demo";
 
   @override
-  SocketDemoState createState() => SocketDemoState();
+  State<StatefulWidget> createState() => SocketDemoState();
 }
 
-class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
+class SocketDemoState extends State<SocketDemo> {
   //
-
-  WebSocketChannel channel;
-
+  TextEditingController _textEditingController;
+  WebSocketChannel _channel;
   String _status;
   SocketUtil _socketUtil;
-
   List<String> _messages;
-  TextEditingController _textEditingController;
 
   @override
   void initState() {
     super.initState();
-    //_connectSocketChannel();
     _textEditingController = TextEditingController();
-    _status = "";
-    _messages = List<String>();
+    //_connectSocketChannel();
+    _status = '';
     _socketUtil = SocketUtil();
+    _messages = List<String>();
   }
 
   _connectSocketChannel() {
-    channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
+    _channel = IOWebSocketChannel.connect('ws://echo.websocket.org');
   }
 
-  void _sendMessage() {
-    channel.sink.add(_textEditingController.text);
+  void sendMessage() {
+    _channel.sink.add(_textEditingController.text);
   }
 
   @override
   void dispose() {
-    channel.sink.close();
     super.dispose();
+    _channel.sink.close();
   }
 
   @override
@@ -63,50 +60,33 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(
-                    const Radius.circular(
-                      5.0,
-                    ),
+                    const Radius.circular(6.0),
                   ),
                 ),
                 filled: true,
                 fillColor: Colors.white60,
                 contentPadding: EdgeInsets.all(15.0),
-                hintText: 'Filter by name or email',
+                hintText: 'Message',
               ),
             ),
-            // StreamBuilder(
-            //   stream: channel.stream,
-            //   builder: (context, snapshot) {
-            //     return Padding(
-            //       padding: const EdgeInsets.symmetric(vertical: 24.0),
-            //       child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
-            //     );
-            //   },
-            // ),
+            SizedBox(
+              height: 20.0,
+            ),
             OutlineButton(
-              child: Text("Send Message"),
+              child: Text('Send Message'),
               onPressed: () {
                 if (_textEditingController.text.isEmpty) {
                   return;
                 }
-                _socketUtil
-                    .sendMessage(_textEditingController.text, connectListener,
-                        messageListener)
-                    .then((connected) {
-                  if (connected) {
-                    _socketUtil.closeSocket();
-                  }
-                });
-                //_sendMessage();
+                //sendMessage();
+                _socketUtil.sendMessage(_textEditingController.text,
+                    connectionListener, messageListener);
               },
             ),
             SizedBox(
               height: 20.0,
             ),
             Text(_status),
-            SizedBox(
-              height: 20.0,
-            ),
             Expanded(
               child: ListView.builder(
                 itemCount: null == _messages ? 0 : _messages.length,
@@ -120,7 +100,16 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
                   );
                 },
               ),
-            ),
+            )
+            // StreamBuilder(
+            //   stream: _channel.stream,
+            //   builder: (context, snapshot) {
+            //     return Padding(
+            //       padding: EdgeInsets.symmetric(vertical: 24.0),
+            //       child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
@@ -131,11 +120,12 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
     setState(() {
       _messages.add(message);
     });
+    print(_messages);
   }
 
-  void connectListener(bool connected) {
+  void connectionListener(bool connected) {
     setState(() {
-      _status = "Status: " + (connected ? "Connected" : "Failed to Connect");
+      _status = 'Status : ' + (connected ? 'Connected' : 'Failed to connect');
     });
   }
 }

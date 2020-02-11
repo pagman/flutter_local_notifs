@@ -5,28 +5,25 @@ class SocketUtil {
   //
   Socket _socket;
   static const String SERVER_IP = "127.0.0.1";
-  static const int SERVER_PORT = 10003;
+  static const int SERVER_PORT = 6000;
 
-  Future<bool> sendMessage(String message, Function connectListener,
+  Future<bool> sendMessage(String message, Function connectionListener,
       Function messageListener) async {
     try {
       _socket = await Socket.connect(SERVER_IP, SERVER_PORT);
-      connectListener(true);
+      connectionListener(true);
       _socket.listen((List<int> event) {
-        messageListener(utf8.decode(event));
+        String message = utf8.decode(event);
+        print('Message: $message');
+        messageListener(message);
       });
       _socket.add(utf8.encode(message));
       _socket.close();
     } catch (e) {
-      connectListener(false);
+      connectionListener(false);
       return false;
     }
     return true;
-  }
-
-  void closeSocket() {
-    _socket.close();
-    _socket = null;
   }
 
   void cleanUp() {
