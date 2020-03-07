@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
-import 'SocketDemo/SocketDemo.dart';
+import 'package:flutter_demos/Provider/ScreenOne.dart';
+import 'package:provider/provider.dart';
+import 'Provider/ItemModel.dart';
+import 'Provider/ShopNameNotifier.dart';
 
 void main() {
-  runApp(
-    HomeApp(),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ItemModel>(
+        builder: (context) => ItemModel(),
+      ),
+      ChangeNotifierProvider<ShopNameNotifier>(
+        builder: (context) => ShopNameNotifier(),
+      ),
+    ],
+    child: HomeApp(),
+  ));
 }
 
 class HomeApp extends StatelessWidget {
@@ -12,7 +23,15 @@ class HomeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SocketDemo(),
+      // home: ChangeNotifierProvider(
+      //   builder: (context) => ToDoModel(),
+      //   child: ScreenOne(),
+      // ),
+      // home: ChangeNotifierProvider<ToDoModel>(
+      //   builder: (context) => ToDoModel(),
+      //   child: ScreenOne(),
+      // ),
+      home: ScreenOne(),
     );
   }
 }

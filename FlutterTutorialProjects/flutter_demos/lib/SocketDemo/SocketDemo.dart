@@ -100,16 +100,16 @@ class SocketDemoState extends State<SocketDemo> {
                   );
                 },
               ),
-            )
-            // StreamBuilder(
-            //   stream: _channel.stream,
-            //   builder: (context, snapshot) {
-            //     return Padding(
-            //       padding: EdgeInsets.symmetric(vertical: 24.0),
-            //       child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
-            //     );
-            //   },
-            // ),
+            ),
+            StreamBuilder(
+              stream: _channel.stream,
+              builder: (context, snapshot) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                  child: Text(snapshot.hasData ? '${snapshot.data}' : ''),
+                );
+              },
+            ),
           ],
         ),
       ),
