@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'Item.dart';
 
-class ItemModel extends ChangeNotifier {
+class ItemAddNotifier extends ChangeNotifier {
   //
-  List<Item> taskList = [];
+  List<Item> itemList = [];
 
   addTask(String item) async {
     //
     Item itemModel = Item(item);
-    taskList.add(itemModel);
+    itemList.add(itemModel);
 
     notifyListeners();
   }

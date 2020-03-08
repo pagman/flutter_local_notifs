@@ -1,35 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demos/Provider/ShopNameNotifier.dart';
 import 'package:provider/provider.dart';
+import 'ItemAddNotifier.dart';
 
-import 'ItemModel.dart';
-
-class ScreenTwo extends StatefulWidget {
+class AddItemsScreen extends StatelessWidget {
   //
-  ScreenTwo() : super();
+  AddItemsScreen() : super();
 
-  final String title = "Screen Two";
-
-  @override
-  _ScreenTwoState createState() => _ScreenTwoState();
-}
-
-class _ScreenTwoState extends State<ScreenTwo> {
+  final String title = "Add Items";
   //
   final TextEditingController _controllerTaskTxt = TextEditingController();
   final TextEditingController _controllerShopTxt = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Add Task'),
       ),
       body: Container(
         padding: EdgeInsets.all(30.0),
@@ -56,31 +45,29 @@ class _ScreenTwoState extends State<ScreenTwo> {
                   );
                   return;
                 }
-                await Provider.of<ItemModel>(context)
+                await Provider.of<ItemAddNotifier>(context)
                     .addTask(_controllerTaskTxt.text);
                 Navigator.pop(context);
               },
             ),
             RaisedButton(
-              child: Text('THIRD SCREEN'),
+              child: Text('NEXT SCREEN'),
               onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) {
-                      return ScreenTwo();
-                    },
-                  ),
-                );
+                _openAddTaskScreen(context);
               },
+            ),
+            SizedBox(
+              height: 20.0,
             ),
             TextField(
               controller: _controllerShopTxt,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(15.0),
-                hintText: 'Your task',
+                hintText: 'Shop Name',
               ),
+            ),
+            SizedBox(
+              height: 20.0,
             ),
             RaisedButton(
               child: Text('UPDATE SHOP NAME'),
@@ -100,6 +87,18 @@ class _ScreenTwoState extends State<ScreenTwo> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  _openAddTaskScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) {
+          return AddItemsScreen();
+        },
       ),
     );
   }

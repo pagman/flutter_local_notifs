@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demos/Provider/ScreenOne.dart';
+import 'package:flutter_demos/Provider/HomeScreen.dart';
 import 'package:provider/provider.dart';
-import 'Provider/ItemModel.dart';
+import 'Provider/ItemAddNotifier.dart';
 import 'Provider/ShopNameNotifier.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<ItemModel>(
-        builder: (context) => ItemModel(),
+      ChangeNotifierProvider<ItemAddNotifier>(
+        builder: (context) => ItemAddNotifier(),
       ),
       ChangeNotifierProvider<ShopNameNotifier>(
         builder: (context) => ShopNameNotifier(),
@@ -27,11 +27,7 @@ class HomeApp extends StatelessWidget {
       //   builder: (context) => ToDoModel(),
       //   child: ScreenOne(),
       // ),
-      // home: ChangeNotifierProvider<ToDoModel>(
-      //   builder: (context) => ToDoModel(),
-      //   child: ScreenOne(),
-      // ),
-      home: ScreenOne(),
+      home: HomeScreen(),
     );
   }
 }

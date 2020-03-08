@@ -1,37 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demos/Provider/ScreenTwo.dart';
-import 'package:flutter_demos/Provider/Item.dart';
-import 'package:flutter_demos/Provider/ItemModel.dart';
+import 'package:flutter_demos/Provider/AddItemsScreen.dart';
+import 'package:flutter_demos/Provider/ItemAddNotifier.dart';
 import 'package:provider/provider.dart';
 import 'ShopNameNotifier.dart';
 
-class ScreenOne extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   //
-  ScreenOne() : super();
+  HomeScreen() : super();
 
-  final String title = "Screen One";
-
-  @override
-  _ScreenOneState createState() => _ScreenOneState();
-}
-
-class _ScreenOneState extends State<ScreenOne> {
-  //
-  List<Item> _items;
-
-  @override
-  void initState() {
-    super.initState();
-    _items = List();
-    Item item = Item('item 1');
-    _items.add(item);
-  }
+  final String title = "Home";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Consumer<ItemAddNotifier>(
+          builder: (context, list, _) {
+            return Text('Items ${list.itemList.length}');
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -41,7 +28,7 @@ class _ScreenOneState extends State<ScreenOne> {
                 MaterialPageRoute(
                   fullscreenDialog: true,
                   builder: (context) {
-                    return ScreenTwo();
+                    return AddItemsScreen();
                   },
                 ),
               );
@@ -54,16 +41,16 @@ class _ScreenOneState extends State<ScreenOne> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Consumer<ItemModel>(
-                builder: (context, todos, child) {
+              child: Consumer<ItemAddNotifier>(
+                builder: (context, todos, _) {
                   return ListView.builder(
                     padding: EdgeInsets.all(10.0),
-                    itemCount: todos.taskList.length,
+                    itemCount: todos.itemList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Text(
-                          todos.taskList[index].task,
+                          todos.itemList[index].task,
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
