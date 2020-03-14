@@ -16,7 +16,9 @@ class AddItemsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(
+          title,
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(30.0),

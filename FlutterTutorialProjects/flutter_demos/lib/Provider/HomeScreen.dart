@@ -38,8 +38,14 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             Consumer<ShopNameNotifier>(
               builder: (context, shopNameNotifier, _) {
-                return Text('Shop Name: ${shopNameNotifier.shopName}');
+                return Text(
+                  'Shop Name: ${shopNameNotifier.shopName}',
+                  style: TextStyle(fontSize: 20.0),
+                );
               },
+            ),
+            SizedBox(
+              height: 20.0,
             ),
             Expanded(
               child: Consumer<ItemAddNotifier>(
