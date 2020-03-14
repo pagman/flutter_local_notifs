@@ -7,7 +7,9 @@ class InfiniteProcessPageStarter extends StatelessWidget {
   @override
   Widget build(context) {
     return ChangeNotifierProvider(
-      builder: (context) => InfiniteProcessIsolateController(),
+      create: (BuildContext context) {
+        return InfiniteProcessIsolateController();
+      },
       child: InfiniteProcessPage(),
     );
   }

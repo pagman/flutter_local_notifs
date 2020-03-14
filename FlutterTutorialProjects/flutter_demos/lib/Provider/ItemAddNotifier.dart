@@ -5,10 +5,9 @@ class ItemAddNotifier extends ChangeNotifier {
   //
   List<Item> itemList = [];
 
-  addTask(String item) async {
-    //
-    Item itemModel = Item(item);
-    itemList.add(itemModel);
+  addItem(String itemName) async {
+    Item item = Item(itemName);
+    itemList.add(item);
 
     notifyListeners();
   }

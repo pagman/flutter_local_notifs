@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demos/Provider/HomeScreen.dart';
+import 'package:flutter_demos/Provider/ItemAddNotifier.dart';
+import 'package:flutter_demos/Provider/ShopNameNotifier.dart';
 import 'package:provider/provider.dart';
-import 'Provider/ItemAddNotifier.dart';
-import 'Provider/ShopNameNotifier.dart';
+import 'Provider/HomeScreen.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<ItemAddNotifier>(
-        builder: (context) => ItemAddNotifier(),
-      ),
-      ChangeNotifierProvider<ShopNameNotifier>(
-        builder: (context) => ShopNameNotifier(),
-      ),
-    ],
-    child: HomeApp(),
-  ));
+  runApp(HomeApp());
 }
 
 class HomeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // home: ChangeNotifierProvider(
-      //   builder: (context) => ToDoModel(),
-      //   child: ScreenOne(),
-      // ),
-      home: HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ItemAddNotifier>(
+          create: (BuildContext context) {
+            return ItemAddNotifier();
+          },
+        ),
+        ChangeNotifierProvider<ShopNameNotifier>(
+          create: (BuildContext context) {
+            return ShopNameNotifier();
+          },
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeScreen(),
+      ),
     );
   }
 }

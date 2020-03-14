@@ -1,4 +1,4 @@
 class Item {
-  String task;
-  Item(this.task);
+  String itemName;
+  Item(this.itemName);
 }
