@@ -1,5 +1,6 @@
+// main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_demos/widgets/EasyJsonParse/JsonParseDemo.dart';
+import 'others/EasyJsonParse/JsonParseDemo.dart';
 
 void main() {
   runApp(HomeApp());

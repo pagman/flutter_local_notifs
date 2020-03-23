@@ -36,14 +36,15 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
       body: Container(
         color: Colors.white,
         child: ListView.builder(
-            itemCount: null == _users ? 0 : _users.length,
-            itemBuilder: (context, index) {
-              User user = _users[index];
-              return ListTile(
-                title: Text(user.name),
-                subtitle: Text(user.email),
-              );
-            }),
+          itemCount: null == _users ? 0 : _users.length,
+          itemBuilder: (context, index) {
+            User user = _users[index];
+            return ListTile(
+              title: Text(user.name),
+              subtitle: Text(user.email),
+            );
+          },
+        ),
       ),
     );
   }
