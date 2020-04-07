@@ -1,6 +1,7 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'others/EasyJsonParse/JsonParseDemo.dart';
+
+import 'others/SocketIOChat/Routes.dart';
 
 void main() {
   runApp(HomeApp());
@@ -11,7 +12,8 @@ class HomeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: JsonParseDemo(),
+      routes: Routes.routes(),
+      initialRoute: Routes.initScreen(),
     );
   }
 }
