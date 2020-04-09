@@ -22,7 +22,6 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   //
-  String _errorConnectMessage;
   TextEditingController _chatTfController;
   List<ChatMessageModel> _chatMessages;
   User _chatUser;
@@ -32,7 +31,6 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    _errorConnectMessage = 'Connecting...';
     _userOnlineStatus = UserOnlineStatus.connecting;
     _chatLVController = ScrollController(initialScrollOffset: 0.0);
     _chatTfController = TextEditingController();
