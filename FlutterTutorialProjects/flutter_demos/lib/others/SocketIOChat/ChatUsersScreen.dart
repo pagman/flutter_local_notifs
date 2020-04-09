@@ -8,7 +8,7 @@ class ChatUsersScreen extends StatefulWidget {
   //
   ChatUsersScreen() : super();
 
-  static const String ROUTE_ID = 'list_chat_screen';
+  static const String ROUTE_ID = 'chat_users_list_screen';
 
   @override
   _ChatUsersScreenState createState() => _ChatUsersScreenState();
@@ -16,7 +16,6 @@ class ChatUsersScreen extends StatefulWidget {
 
 class _ChatUsersScreenState extends State<ChatUsersScreen> {
   //
-
   List<User> _chatUsers;
   bool _connectedToSocket;
   String _errorConnectMessage;
@@ -30,16 +29,18 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     _connectSocket();
   }
 
-  _connectSocket() async {
-    print(
-        "Connecting Logged In User: ${G.loggedInUser.name}, ID: ${G.loggedInUser.id}");
-    G.initSocket();
-    await G.socketUtils.initSocket(G.loggedInUser);
-    G.socketUtils.connectToSocket();
-    G.socketUtils.setConnectListener(onConnect);
-    G.socketUtils.setOnDisconnectListener(onDisconnect);
-    G.socketUtils.setOnErrorListener(onError);
-    G.socketUtils.setOnConnectionErrorListener(onConnectError);
+  _connectSocket() {
+    Future.delayed(Duration(seconds: 2), () async {
+      print(
+          "Connecting Logged In User: ${G.loggedInUser.name}, ID: ${G.loggedInUser.id}");
+      G.initSocket();
+      await G.socketUtils.initSocket(G.loggedInUser);
+      G.socketUtils.connectToSocket();
+      G.socketUtils.setConnectListener(onConnect);
+      G.socketUtils.setOnDisconnectListener(onDisconnect);
+      G.socketUtils.setOnErrorListener(onError);
+      G.socketUtils.setOnConnectionErrorListener(onConnectError);
+    });
   }
 
   static openLoginScreen(BuildContext context) async {
@@ -121,7 +122,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
   }
 
   onConnectTimeout(data) {
-    print('onConnectTimeout');
+    print('onConnectTimeout $data');
     setState(() {
       _connectedToSocket = false;
       _errorConnectMessage = 'Connection timedout';
@@ -129,7 +130,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
   }
 
   onError(data) {
-    print('onError');
+    print('onError $data');
     setState(() {
       _connectedToSocket = false;
       _errorConnectMessage = 'Connection Failed';
@@ -137,7 +138,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
   }
 
   onDisconnect(data) {
-    print('onDisconnect');
+    print('onDisconnect $data');
     setState(() {
       _connectedToSocket = false;
       _errorConnectMessage = 'Disconnected';

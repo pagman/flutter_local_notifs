@@ -1,16 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_demos/others/SocketIOChat/ChatMessageModel.dart';
-
 import 'User.dart';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 
 class SocketUtils {
   //
-  static String SERVER_IP =
+  static String _serverIP =
       Platform.isIOS ? 'http://localhost' : 'http://10.0.2.2';
   static const int SERVER_PORT = 4002;
-  static String _CONNECT_URL = '$SERVER_IP:$SERVER_PORT';
+  static String _connectUrl = '$_serverIP:$SERVER_PORT';
 
   // Events
   static const String ON_MESSAGE_RECEIVED = 'receive_message';
@@ -49,7 +47,7 @@ class SocketUtils {
       'from': _fromUser.id.toString(),
     };
     return SocketOptions(
-      _CONNECT_URL,
+      _connectUrl,
       enableLogging: true,
       transports: [Transports.WEB_SOCKET],
       query: userMap,
@@ -91,8 +89,6 @@ class SocketUtils {
 
   setConnectListener(Function onConnect) {
     _socket.onConnect((data) {
-      print("connected...$data");
-      pprint(data);
       onConnect(data);
     });
   }
@@ -111,7 +107,6 @@ class SocketUtils {
 
   setOnErrorListener(Function onError) {
     _socket.onError((error) {
-      print("Error: " + error);
       onError(error);
     });
   }
@@ -141,13 +136,6 @@ class SocketUtils {
     _socket.on(IS_USER_CONNECTED_EVENT, (data) {
       onUserConnectionStatus(data);
     });
-  }
-
-  pprint(data) {
-    if (data is Map) {
-      data = json.encode(data);
-    }
-    print(data);
   }
 
   closeConnection() {

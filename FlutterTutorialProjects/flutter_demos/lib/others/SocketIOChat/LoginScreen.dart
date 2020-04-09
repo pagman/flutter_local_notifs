@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demos/ErrorHandling/HomeScreen.dart';
-import 'package:flutter_demos/others/SocketIOChat/ChatScreen.dart';
 import 'ChatUsersScreen.dart';
 import 'Global.dart';
 import 'User.dart';
@@ -9,7 +7,6 @@ class LoginScreen extends StatefulWidget {
   //
   LoginScreen() : super();
 
-  // This screen's ID, can be used later in navigation
   static const String ROUTE_ID = 'login_screen';
 
   @override
@@ -31,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('LOGIN'),
+        title: Text("Let's Chat"),
       ),
       body: Container(
         alignment: Alignment.center,
