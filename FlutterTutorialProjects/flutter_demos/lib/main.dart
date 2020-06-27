@@ -1,7 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
-
-import 'others/SocketIOChat/Routes.dart';
+import 'package:flutter_demos/LocalNotificationsScreenDemo2.dart';
 
 void main() {
   runApp(HomeApp());
@@ -12,8 +11,7 @@ class HomeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: Routes.routes(),
-      initialRoute: Routes.initScreen(),
+      home: LocalNotificationsScreen(),
     );
   }
 }
