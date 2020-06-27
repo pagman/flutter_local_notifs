@@ -95,18 +95,11 @@ class NotificationPlugin {
   Future<void> scheduleNotification() async {
     var scheduledNotificationDateTime =
         DateTime.now().add(Duration(seconds: 5));
-    var vibrationPattern = Int64List(4);
-    vibrationPattern[0] = 0;
-    vibrationPattern[1] = 1000;
-    vibrationPattern[2] = 5000;
-    vibrationPattern[3] = 2000;
-
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'Channel ID', 'Channel Name', 'Channel Description',
         icon: 'secondary_icon',
         sound: RawResourceAndroidNotificationSound('slow_spring_board'),
         largeIcon: DrawableResourceAndroidBitmap('sample_large_icon'),
-        vibrationPattern: vibrationPattern,
         enableLights: true,
         color: const Color.fromARGB(255, 255, 0, 0),
         ledColor: const Color.fromARGB(255, 255, 0, 0),
