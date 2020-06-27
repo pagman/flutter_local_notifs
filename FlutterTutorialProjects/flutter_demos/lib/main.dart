@@ -1,6 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_demos/LocalNotificationsScreenDemo2.dart';
+import 'package:flutter_demos/LocalNotificationsScreen.dart';
 
 void main() {
   runApp(HomeApp());
