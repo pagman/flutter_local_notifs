@@ -77,6 +77,7 @@ class NotificationPlugin {
       "CHANNEL_DESCRIPTION",
       importance: Importance.Max,
       priority: Priority.High,
+      //sound: RawResourceAndroidNotificationSound('my_sound'),
       playSound: true,
       timeoutAfter: 5000,
       styleInformation: DefaultStyleInformation(true, true),
@@ -161,14 +162,15 @@ class NotificationPlugin {
   }
 
   Future<void> scheduleNotification() async {
-    var scheduleNotificationDateTime = DateTime.now().add(Duration(seconds: 5));
+    DateTime now = DateTime.now();
+    var scheduleNotificationDateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second+5);
     var androidChannelSpecifics = AndroidNotificationDetails(
       'CHANNEL_ID 1',
       'CHANNEL_NAME 1',
       "CHANNEL_DESCRIPTION 1",
-      icon: 'secondary_icon',
-      sound: RawResourceAndroidNotificationSound('my_sound'),
-      largeIcon: DrawableResourceAndroidBitmap('large_notf_icon'),
+      //icon: 'secondary_icon',
+      //sound: RawResourceAndroidNotificationSound('my_sound'),
+      //largeIcon: DrawableResourceAndroidBitmap('large_notf_icon'),
       enableLights: true,
       color: const Color.fromARGB(255, 255, 0, 0),
       ledColor: const Color.fromARGB(255, 255, 0, 0),
@@ -177,7 +179,7 @@ class NotificationPlugin {
       importance: Importance.Max,
       priority: Priority.High,
       playSound: true,
-      timeoutAfter: 5000,
+      //timeoutAfter: 5000,
       styleInformation: DefaultStyleInformation(true, true),
     );
     var iosChannelSpecifics = IOSNotificationDetails(
@@ -188,12 +190,12 @@ class NotificationPlugin {
       iosChannelSpecifics,
     );
     await flutterLocalNotificationsPlugin.schedule(
-      0,
-      'Test Title',
-      'Test Body',
+      DateTime.now().second,
+      'Notif',
+      'test',
       scheduleNotificationDateTime,
       platformChannelSpecifics,
-      payload: 'Test Payload',
+      payload: 'Skata',
     );
   }
 

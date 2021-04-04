@@ -30,9 +30,9 @@ class _LocalNotificationScreenState extends State<LocalNotificationScreen> {
       body: Center(
         child: FlatButton(
           onPressed: () async {
-            await notificationPlugin.showNotification();
-            // await notificationPlugin.scheduleNotification();
-            await notificationPlugin.showNotificationWithAttachment();
+            // await notificationPlugin.showNotification();
+             await notificationPlugin.scheduleNotification();
+            // await notificationPlugin.showNotificationWithAttachment();
             // await notificationPlugin.repeatNotification();
             // await notificationPlugin.showDailyAtTime();
             // await notificationPlugin.showWeeklyAtDayTime();
